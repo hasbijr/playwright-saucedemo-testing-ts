@@ -2,7 +2,7 @@ pipeline {
     agent {
         // Using a Docker agent is highly professional as it ensures a consistent environment
         docker {
-            image 'mcr.microsoft.com/playwright:v1.43.0-jammy'
+            image 'mcr.microsoft.com/playwright:v1.59.1-jammy'
         }
     }
 
@@ -26,12 +26,14 @@ pipeline {
             // Archive the Playwright report to view in Jenkins
             archiveArtifacts artifacts: 'playwright-report/**', allowEmptyArchive: true
             
-            // If the HTML Publisher plugin is installed, you can use:
-            // publishHTML(target: [
-            //     reportDir: 'playwright-report',
-            //     reportFiles: 'index.html',
-            //     reportName: 'Playwright Report'
-            // ])
+            // Publish HTML report if the plugin is installed
+            publishHTML(target: [
+                reportDir: 'playwright-report',
+                reportFiles: 'index.html',
+                reportName: 'Playwright Report',
+                keepAll: true,
+                alwaysLinkToLastBuild: true
+            ])
         }
     }
 }
