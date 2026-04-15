@@ -1,53 +1,63 @@
 # SauceDemo Automation Testing with Playwright & Jenkins CI/CD
 
-This repository contains a professional automated testing framework for the [SauceDemo](https://www.saucedemo.com/) website. It uses **Playwright** with **TypeScript** and follows the **Page Object Model (POM)** design pattern, integrating **BDD (Cucumber)** for readable test scenarios.
+This repository contains a professional automated testing framework for the [SauceDemo](https://www.saucedemo.com/) website. It utilizes **Playwright** with **TypeScript**, follows the **Page Object Model (POM)** design pattern, and leverages **Fixtures** with **BDD (Cucumber)** for scalable, high-performance automation.
 
-## 🚀 Features
-- **Playwright BDD**: Gherkin-style test scenarios using `playwright-bdd`.
-- **Page Object Model**: Maintainable and reusable code structure.
-- **Jenkins CI/CD**: Automated pipeline configured via `Jenkinsfile`.
-- **Dockerized Environment**: Jenkins and Playwright run in Docker containers for consistency.
-- **HTML Reporting**: Automated Playwright reports archived and viewable in Jenkins.
+## 🚀 Key Features
+
+- **Playwright Fixtures**: Uses dependency injection to manage Page Objects and test state, eliminating boilerplate code.
+- **Dynamic Data Validation**: Real-time calculation of cart totals based on user selection to verify checkout accuracy.
+- **UI-API Integration**: Cross-layer verification that ensures the website's product catalog matches a master data source.
+- **Full API CRUD**: Comprehensive testing of `GET`, `POST`, `PUT`, and `DELETE` methods using JSONPlaceholder.
+- **Jenkins CI/CD**: Automated pipeline configured via `Jenkinsfile` for continuous validation.
+- **Dockerized Infrastructure**: Consistent environment for Jenkins and Playwright execution.
+- **Data-Driven Testing**: Centralized credential and test data management in `testData.json`.
 
 ## 🛠 Tech Stack
+
 - **Language**: TypeScript
 - **Testing Framework**: Playwright
-- **BDD**: Cucumber / Gherkin
+- **BDD Engine**: `playwright-bdd` (Cucumber/Gherkin)
 - **CI/CD**: Jenkins
-- **Infrastructure**: Docker & Docker Compose
+- **Containerization**: Docker & Docker Compose
 
 ## 📦 Project Structure
-- `src/pages`: Page Object classes.
-- `src/test/features`: Gherkin feature files.
-- `src/test/steps`: Step definitions for Cucumber scenarios.
-- `Jenkinsfile`: Defines the CI/CD pipeline stages.
-- `docker-compose.yml`: Set up Jenkins with Docker-in-Docker support.
-- `Dockerfile`: Custom Jenkins image with Docker CLI installed.
+
+- `src/pages`: Page Object Model classes.
+- `src/test/features`: Gherkin scenarios for Login, Cart, Purchase, Logout, and API.
+- `src/test/steps`: Step definitions with fixture injection.
+- `src/test/fixtures`: Centralized fixtures for Page Objects and `cartState`.
+- `src/test/data`: `testData.json` for environment-specific data.
+- `Jenkinsfile`: Defines the automated CI/CD pipeline.
+- `docker-compose.yml`: Local setup for Jenkins and Docker-in-Docker.
 
 ## ⚙️ How to Run Locally
 
 ### 1. Prerequisites
-- Node.js installed
-- Docker & Docker Compose installed
+- Node.js (v16+)
+- Docker & Docker Compose
 
 ### 2. Manual Test Execution
 ```bash
+# Install dependencies
 npm install
+
+# Run all tests (BDD Generation + Execution)
 npm test
 ```
 
 ### 3. Running Jenkins CI/CD
-1. Start Jenkins using Docker Compose:
+1. Start Jenkins with Docker Compose:
    ```bash
    docker-compose up -d --build
    ```
-2. Access Jenkins at `http://localhost:8080`.
-3. Follow the setup instructions (retrieve initial admin password via `docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword`).
-4. Install **Docker Pipeline** and **HTML Publisher** plugins.
-5. Create a **Pipeline** job pointing to this repository.
+2. Retrieve the initial admin password:
+   ```bash
+   docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
+   ```
+3. Create a Pipeline job in Jenkins pointing to this repository.
 
-## 📊 Reports
-After each Jenkins build, the Playwright HTML report is archived. You can view it directly in the Jenkins UI under the **Playwright Report** link (requires HTML Publisher plugin).
+## 📊 Reporting
+Playwright generates a detailed HTML report after each run. In Jenkins, these are automatically archived and viewable under the **Playwright Report** section.
 
 ---
-*Created with ❤️ for Automation Excellence.*
+*Developed with a focus on Maintainability, Scalability, and Precision.*
