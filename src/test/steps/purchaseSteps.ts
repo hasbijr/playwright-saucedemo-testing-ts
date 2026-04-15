@@ -14,13 +14,11 @@ Then('the first item price should be higher than the second', async ({ inventory
   expect(firstPrice).toBeGreaterThanOrEqual(secondPrice);
 });
 
-When('I add the {string} product to the cart', async ({ inventoryPage, cartState }, position: string) => {
-  const index = position === 'first' ? 0 : 1; // Simplification for demo
-  const name = await inventoryPage.getItemName(index);
-  const price = await inventoryPage.getItemPrice(index);
+When('I add {string} to the cart', async ({ inventoryPage, cartState }, productName: string) => {
+  const price = await inventoryPage.getPriceByName(productName);
   
-  await inventoryPage.addItemToCart(index);
-  cartState.addedItems.push({ name, price });
+  await inventoryPage.addItemByName(productName);
+  cartState.addedItems.push({ name: productName, price });
 });
 
 When('I navigate to the cart page', async ({ page }) => {
@@ -42,11 +40,19 @@ Then('I should see the checkout overview', async ({ page }) => {
 Then('the total price should be correctly calculated with tax', async ({ checkoutOverviewPage, cartState }) => {
   const { subtotal, tax, total } = await checkoutOverviewPage.getPriceDetails();
   
-  // Dynamic Calculation: Sum of items stored in cartState
+  // 1. Calculate Expected Subtotal (Sum of added items from state)
   const expectedSubtotal = cartState.addedItems.reduce((sum, item) => sum + item.price, 0);
   
+  // 2. Delegate Tax Calculation to Page Object ("The Right File")
+  const expectedTax = checkoutOverviewPage.calculateExpectedTax(expectedSubtotal);
+  
+  // 3. Calculate Expected Total
+  const expectedTotal = expectedSubtotal + expectedTax;
+  
+  // Compare calculated formula results against the results from the screen
   expect(subtotal).toBeCloseTo(expectedSubtotal, 2);
-  expect(total).toBeCloseTo(subtotal + tax, 2);
+  expect(tax).toBeCloseTo(expectedTax, 2);
+  expect(total).toBeCloseTo(expectedTotal, 2);
 });
 
 When('I click the finish button', async ({ checkoutOverviewPage }) => {

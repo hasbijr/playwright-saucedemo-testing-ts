@@ -6,6 +6,7 @@ export class CheckoutOverviewPage extends BasePage {
   readonly tax: Locator;
   readonly total: Locator;
   readonly finishButton: Locator;
+  readonly TAX_RATE = 0.08;
 
   constructor(page: Page) {
     super(page);
@@ -13,6 +14,10 @@ export class CheckoutOverviewPage extends BasePage {
     this.tax = page.locator('[data-test="tax-label"]');
     this.total = page.locator('[data-test="total-label"]');
     this.finishButton = page.locator('[data-test="finish"]');
+  }
+
+  calculateExpectedTax(subtotal: number) {
+    return parseFloat((subtotal * this.TAX_RATE).toFixed(2));
   }
 
   async getPriceDetails() {

@@ -10,7 +10,7 @@ Feature: Purchase Flow
     Then the first item price should be higher than the second
 
   Scenario: Successful product purchase with tax validation
-    When I add the "first" product to the cart
+    When I add "Sauce Labs Backpack" to the cart
     And I navigate to the cart page
     And I click on the checkout button
     And I fill in checkout information with "John" "Doe" "12345"

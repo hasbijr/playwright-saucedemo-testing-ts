@@ -13,6 +13,10 @@ export class InventoryPage extends BasePage {
     this.inventoryItems = page.locator('.inventory_item');
   }
 
+  itemContainer(name: string) {
+    return this.inventoryItems.filter({ hasText: name });
+  }
+
   async getHeaderText() {
     return await this.headerTitle.innerText();
   }
@@ -23,6 +27,15 @@ export class InventoryPage extends BasePage {
 
   async addItemToCart(index: number = 0) {
     await this.inventoryItems.nth(index).locator('button').click();
+  }
+
+  async getPriceByName(name: string) {
+    const priceText = await this.itemContainer(name).locator('.inventory_item_price').innerText();
+    return parseFloat(priceText.replace('$', ''));
+  }
+
+  async addItemByName(name: string) {
+    await this.itemContainer(name).locator('button').click();
   }
 
   async getItemPrice(index: number = 0) {
