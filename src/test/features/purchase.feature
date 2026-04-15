@@ -2,7 +2,7 @@ Feature: Purchase Flow
 
   Background:
     Given I am on the login page
-    And I login with valid credentials
+    And I login as "validUser"
 
   Scenario: Verify inventory page and sorting
     Then I should be redirected to the inventory page
@@ -10,7 +10,7 @@ Feature: Purchase Flow
     Then the first item price should be higher than the second
 
   Scenario: Successful product purchase with tax validation
-    When I add the first product to the cart
+    When I add the "first" product to the cart
     And I navigate to the cart page
     And I click on the checkout button
     And I fill in checkout information with "John" "Doe" "12345"

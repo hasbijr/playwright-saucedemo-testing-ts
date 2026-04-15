@@ -1,12 +1,26 @@
 import { createBdd } from 'playwright-bdd';
 import { expect, APIResponse } from '@playwright/test';
+import { test } from '../fixtures/fixtures';
 
-const { Given, Then } = createBdd();
+const { Given, Then } = createBdd(test);
 
 let apiResponse: APIResponse;
 
 Given('I send a GET request to {string}', async ({ request }, url) => {
   apiResponse = await request.get(url);
+});
+
+Given('I send a PUT request to {string} with title {string}', async ({ request }, url, title) => {
+  apiResponse = await request.put(url, {
+    data: {
+      title,
+      userId: 1
+    }
+  });
+});
+
+Given('I send a DELETE request to {string}', async ({ request }, url) => {
+  apiResponse = await request.delete(url);
 });
 
 Given('I send a POST request to {string} with title {string} and body {string}', async ({ request }, url, title, body) => {

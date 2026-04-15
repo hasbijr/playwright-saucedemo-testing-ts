@@ -10,3 +10,12 @@ Feature: API Testing
     Then the response status should be 201
     And the response body should contain the sent title and body
     And the response body should contain id 101
+
+  Scenario: Verify PUT request to JSONPlaceholder
+    Given I send a PUT request to "https://jsonplaceholder.typicode.com/posts/1" with title "Updated Title"
+    Then the response status should be 200
+    And the response body should contain title "Updated Title"
+
+  Scenario: Verify DELETE request to JSONPlaceholder
+    Given I send a DELETE request to "https://jsonplaceholder.typicode.com/posts/1"
+    Then the response status should be 200

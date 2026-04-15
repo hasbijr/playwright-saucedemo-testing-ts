@@ -25,8 +25,28 @@ export class InventoryPage extends BasePage {
     await this.inventoryItems.nth(index).locator('button').click();
   }
 
-  async getFirstItemPrice() {
-    const priceText = await this.inventoryItems.first().locator('.inventory_item_price').innerText();
+  async getItemPrice(index: number = 0) {
+    const priceText = await this.inventoryItems.nth(index).locator('.inventory_item_price').innerText();
     return parseFloat(priceText.replace('$', ''));
+  }
+
+  async getItemName(index: number = 0) {
+    return await this.inventoryItems.nth(index).locator('.inventory_item_name').innerText();
+  }
+
+  async openItemDetails(index: number = 0) {
+    await this.inventoryItems.nth(index).locator('.inventory_item_name').click();
+  }
+
+  async getAllProducts() {
+    const count = await this.inventoryItems.count();
+    const products = [];
+    for (let i = 0; i < count; i++) {
+      products.push({
+        name: await this.getItemName(i),
+        price: await this.getItemPrice(i)
+      });
+    }
+    return products;
   }
 }
